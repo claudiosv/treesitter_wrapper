@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "treesitter_wrapper"
+authors = [
+    {name = "Claudio Spiess", email = "claudiosv@noreply.github.com"},
+]
+description = "Type-safe Tree Sitter parsing"
+requires-python = ">=3.11"
+license = {text = "GPL3"}
+dependencies = [
+    "tree_sitter_languages",
+    'importlib-metadata; python_version>="3.11"',
+    "pytest"
+]
+dynamic = ["version"]
