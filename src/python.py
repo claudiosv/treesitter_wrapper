@@ -116,9 +116,9 @@ if __name__ == "__main__":
             if len(quoted_children) > 1:
                 child_types = "Union["+child_types+"]"
         python_classes += f"\n\nclass {parent_type_name}({parents}):"
-        python_classes += f"\n   named: bool = {values['named']}"
-        python_classes += f"\n   _type: str = \"{values['type']}\""
+        python_classes += f"\n    named: bool = {values['named']}"
+        python_classes += f"\n    _type: str = \"{values['type']}\""
         if "children" in values:
-            python_classes += f"\n   children: list[{child_types}]"
+            python_classes += f"\n    children: list[{child_types}]"
         print(f"case \"{values['type']}\":\n    return {type_}")
     Path("src/python_types1.py").write_text(python_classes)
