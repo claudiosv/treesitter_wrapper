@@ -1,15 +1,25 @@
-from tree_sitter import Tree as TsTree, TreeCursor
+from typing import Self
+from tree_sitter import Tree as TsTree, TreeCursor as TsTreeCursor
 from NodeFactory import NodeFactory
+import Node
+
 
 class Range:
     @property
-    def start_byte(self) -> int: ...
+    def start_byte(self) -> int:
+        ...
+
     @property
-    def end_byte(self) -> int: ...
+    def end_byte(self) -> int:
+        ...
+
     @property
-    def start_point(self) -> tuple[int, int]: ...
+    def start_point(self) -> tuple[int, int]:
+        ...
+
     @property
-    def end_point(self) -> tuple[int, int]: ...
+    def end_point(self) -> tuple[int, int]:
+        ...
 
 
 class Tree:
@@ -46,5 +56,28 @@ class Tree:
     def get_changed_ranges(self, new_tree: TsTree) -> list[Range]:
         return self._tree.get_changed_ranges(new_tree)
 
-    def walk(self) -> TreeCursor:
+    def walk(self) -> TsTreeCursor:
         return self._tree.walk()
+
+
+class TreeCursor:
+    def __init__(self, _tree_cursor: TsTreeCursor):
+        self._tree_cursor = _tree_cursor
+
+    def node(self) -> Node.Node:
+        return self._tree_cursor.node()
+
+    def copy(self) -> Self:
+        return self._tree_cursor.copy()
+
+    def current_field_name(self) -> str | None:
+        return self._tree_cursor.current_field_name()
+
+    def goto_first_child(self) -> bool:
+        return self._tree_cursor.goto_first_child()
+
+    def goto_next_sibling(self) -> bool:
+        return self._tree_cursor.goto_next_sibling()
+
+    def goto_parent(self) -> bool:
+        return self._tree_cursor.goto_parent()

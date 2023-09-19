@@ -1,6 +1,8 @@
 from Node import Node
 from typing import Union
 
+from visitor import FunctionVisitor
+
 
 class Type(Node):
    named: bool = False
