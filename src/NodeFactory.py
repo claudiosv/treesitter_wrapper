@@ -2,7 +2,7 @@ from python_types import *
 # from Node import Node
 
 
-from tree_sitter import Node as TsNode
+from tree_sitter import Language, Node as TsNode
 
 
 class NodeFactory:
@@ -344,8 +344,8 @@ class NodeFactory:
         raise Exception(f"Type {node_type} not found")
 
     @staticmethod
-    def get_node(node: TsNode) -> Node:
+    def get_node(node: TsNode, language: Language) -> Node:
         if node is None:
             return None
         else:
-            return NodeFactory.get_node_type(node.type)(node)
+            return NodeFactory.get_node_type(node.type)(node, language)

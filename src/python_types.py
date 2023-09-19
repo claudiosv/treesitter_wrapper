@@ -3,7 +3,6 @@ from typing import Union
 
 from visitor import FunctionVisitor
 
-
 class Type(Node):
    named: bool = False
    _type: str = "None"
@@ -610,9 +609,8 @@ class ClassDefinition(_CompoundStatement):
    _type: str = "class_definition"
 
    def get_functions(self):
-      for child in self.children:
-         if isinstance(child, FunctionDefinitionT):
-            yield child
+      fv = FunctionVisitor()
+      return fv.walk(self)
 
 class FunctionDefinitionT(_CompoundStatement):
    ...
@@ -629,6 +627,31 @@ class ForStatement(_CompoundStatement):
 class FunctionDefinition(FunctionDefinitionT):
    named: bool = True
    _type: str = "function_definition"
+
+   def get_docstring(self):
+      query = self.language.query(
+        """
+        (function_definition
+          (block
+            (expression_statement
+              (string) @docstring)))
+        """,
+      )
+      captures = query.captures(self._node)
+      for captured_node, _capture_name in captures:
+            yield dict(
+                doc_string_node=captured_node,
+                function_node=captured_node.parent.parent.parent,
+            )
+
+   def get_signature(self):
+      pass
+
+   def get_definition_without_docstring(self):
+      pass
+
+   def get_name(self):
+      pass
 
 
 class IfStatement(_CompoundStatement):

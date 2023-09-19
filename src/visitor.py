@@ -34,6 +34,7 @@ class ASTVisitor:
 
     def visit(self, node):
         """Default handler that captures all nodes not already handled"""
+        return True
 
     def visit_ERROR(self, error_node):
         """
@@ -57,7 +58,7 @@ class ASTVisitor:
         Returning False stops the traversal of the subtree rooted at the given node.
         """
         visitor_fn = getattr(self, f"visit_{node.type}", self.visit)
-        return visitor_fn(node) is not False
+        return visitor_fn(node)
 
     def walk(self, tree):
         """
@@ -72,9 +73,11 @@ class ASTVisitor:
 
         while has_next:
             current_node = cursor.node
-
-            if self.on_visit(current_node):
+            on_visit = self.on_visit(current_node)
+            if on_visit:
                 has_next = cursor.goto_first_child()
+                if not isinstance(on_visit, bool):
+                    yield on_visit
             else:
                 has_next = False
 
@@ -88,7 +91,10 @@ class FunctionVisitor(ASTVisitor):
         functions = []
         def visit_function_definition(self, function_node):
             # Called for nodes of type module only
+            # yield function_node
             self.functions.append(function_node)
+            return function_node
+            # return True
 
 
         def visit_string(self, node):

@@ -1,7 +1,10 @@
-from tree_sitter import Node as TsNode, TreeCursor
+from tree_sitter import Node as TsNode, TreeCursor, Language
 from typing import Self, Any
 
 import NodeFactory
+class NodeList(list):
+    def text(self):
+        pass # walk and print text
 
 class Node:
     start_byte: int
@@ -15,8 +18,8 @@ class Node:
     is_named: bool
     child_count: int
     named_child_count: bool
-    children: list[Self]
-    named_children: list[Self]
+    children: NodeList[Self]
+    named_children: NodeList[Self]
     next_named_sibling: Self | None
     next_sibling: Self | None
     parent: Self | None
@@ -24,8 +27,9 @@ class Node:
     prev_sibling: Self | None
     text: bytes | Any
     type: str
+    language: Language
 
-    def __init__(self, _node: TsNode):
+    def __init__(self, _node: TsNode, language: Language):
         self._node = _node
         self.start_byte = _node.start_byte
         self.start_point = _node.start_point
@@ -47,6 +51,7 @@ class Node:
         self.prev_sibling = _node.prev_sibling
         self.text = _node.text
         self.type = _node.type
+        self.language = language
 
     # @property
     # def start_byte(self) -> int:

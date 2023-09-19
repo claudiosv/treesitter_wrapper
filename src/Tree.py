@@ -1,5 +1,5 @@
 from typing import Self
-from tree_sitter import Tree as TsTree, TreeCursor as TsTreeCursor
+from tree_sitter import Language, Tree as TsTree, TreeCursor as TsTreeCursor
 from NodeFactory import NodeFactory
 import Node
 
@@ -23,9 +23,9 @@ class Range:
 
 
 class Tree:
-    def __init__(self, _tree: TsTree):
+    def __init__(self, _tree: TsTree, language: Language):
         self._tree = _tree
-        self.root_node = NodeFactory.get_node(_tree.root_node)
+        self.root_node = NodeFactory.get_node(_tree.root_node, language)
 
     # @property
     # def root_node(self) -> Node:
