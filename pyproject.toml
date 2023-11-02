@@ -12,7 +12,8 @@ requires-python = ">=3.11"
 license = {text = "GPL3"}
 dependencies = [
     "tree_sitter_languages",
-    'importlib-metadata; python_version>="3.11"',
-    "pytest"
+    "pytest",
+    "transformers",
+    "tokenizers"
 ]
 dynamic = ["version"]
